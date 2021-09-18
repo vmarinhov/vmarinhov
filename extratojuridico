@@ -1,0 +1,18 @@
+import re
+import requests
+# precisa colocar requests.get pra  utf-8
+
+req = requests.get('https://g1.globo.com/',)
+
+pagina = req.content
+leitura = str(pagina)
+
+
+
+manchete = re.findall(r'"title":"(.*?)",', leitura)
+print ('Manchete:')
+print(manchete)
+
+subtitulo = re.findall(r'"summary":"(.*?)","title"', leitura)
+print ('Subtitulo:')
+print(subtitulo)
