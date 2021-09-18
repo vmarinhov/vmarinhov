@@ -1,18 +1,59 @@
+import json
 import re
 import requests
+
 # precisa colocar requests.get pra  utf-8
 
-req = requests.get('https://g1.globo.com/',)
-
+req = requests.get('https://g1.globo.com/')
 pagina = req.content
 leitura = str(pagina)
 
 
 
 manchete = re.findall(r'"title":"(.*?)",', leitura)
-print ('Manchete:')
-print(manchete)
+print ('*Manchetes:*''\n')
+print(*manchete,sep='\n')
 
 subtitulo = re.findall(r'"summary":"(.*?)","title"', leitura)
-print ('Subtitulo:')
-print(subtitulo)
+print ('\n''*Subtitulos:*''\n')
+print(*subtitulo,sep='\n')
+
+
+
+#manchetes e subs integrados
+
+tituloComSubtitulo = re.findall(r'text-ssr"(.*?)/div>', leitura)
+#print(tituloComSubtitulo)
+#titulosCompletos = re.findall(r'>(.*?)</', str (tituloComSubtitulo))
+#subtitulosCompleto =re.findall(>(.*?).<', str (tituloComSubtitulo))
+#print(subtitulosCompleto,sep='\n')
+
+
+#listaManchete = manchete
+#listaSubs = subtitulo
+#text = ''
+#for manchete, subtitulo in zip(listaManchete, listaSubs):
+#    text += '\nMANCHETEEE {} \n SUBISSS{}'.format(manchete, subtitulo)
+#print(text)
+
+
+
+
+
+#manchetes Json
+dadosManchetes = json.dumps(manchete)
+
+with open('manchetesJson.json', 'w', encoding='utf8') as f:
+    json.dump(dadosManchetes, f, separators=(',', ':'))
+
+#print(dadosManchetes)
+
+#subtitulos Json
+dadosSubtitulos = json.dumps(subtitulo)
+
+with open('subtitulosJson.json', 'w', encoding='utf8') as f:
+    json.dump(dadosSubtitulos, f, ensure_ascii=False, sort_keys=True, indent=4, separators=(',', ':'))
+
+#print(dadosSubtitulos)
+
+
