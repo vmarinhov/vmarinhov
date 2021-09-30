@@ -1,0 +1,123 @@
+import json
+import re
+import requests
+
+# precisa colocar requests.get pra  utf-8
+
+req = requests.get('https://www2.tjal.jus.br/cpopg/show.do?processo.codigo=01000KDKR0000&processo.foro=1&processo.numero=0732693-06.2016.8.02.0001&uuidCaptcha=sajcaptcha_22153a21575f44759918e6c528b52c4e')
+pagina = req.content
+leitura = str(pagina)
+#print(req.content)
+
+
+numeroProcesso = re.findall(r'numeroProcesso" class="unj-larger-1"(.*?)</span>', leitura)
+print ('Numero do processo:')
+print(numeroProcesso)
+
+#Corpo
+#classe
+classe = re.findall(r'<span id="classeProcesso" title=(.*?)">', leitura)
+print ('Classe:')
+print(classe)
+
+#assunto
+assunto = re.findall(r'<span id="assuntoProcesso" title=(.*?)">', leitura)
+print ('Assunto:')
+print(assunto)
+
+#foro
+foro = re.findall(r'<span id="foroProcesso" title=(.*?)">', leitura)
+print ('Foro:')
+print(foro)
+
+#vara
+vara = re.findall(r'<span id="varaProcesso" title=(.*?)">', leitura)
+print ('vara:')
+print(vara)
+
+#juiz
+juiz = re.findall(r'<span id="juizProcesso" title=(.*?)">', leitura)
+print ('juiz:')
+print(juiz)
+
+#distribuição
+distr = re.findall(r'<div id="dataHoraDistribuicaoProcesso">(.*?)</div>', leitura)
+print ('distr:')
+print(distr)
+
+#controle
+control = re.findall(r'<div id="numeroControleProcesso">(.*?)</div>', leitura)
+print ('controle:')
+print(control)
+
+#area
+area = re.findall(r'<div id="areaProcesso" class="lh-1-1 line-clamp__2"> <span title="(.*?)">', leitura)
+print ('area:')
+print(area)
+
+#valor
+valor = re.findall(r'id="valorAcaoProcesso">(.*?)<', leitura)
+print ('valor:')
+print(valor)
+
+
+
+
+#Partes
+#autorPrincipal
+
+#autores = re.findall(r'class="mensagemExibindo">Advogado:&nbsp;</span>\\n\\t\\t\\t\\n\\t\\t\\t\\t\\n\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t(.*?)\\n\\t\\t\\t\\t\\n\\t\\t\\t&nbsp;\\n', leitura, flags=re.DOTALL)
+re1= r'class="mensagemExibindo">Advogado:&nbsp;</span>\\n\\t\\t\\t\\n\\t\\t\\t\\t\\n\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t(.*?)\\n\\t\\t\\t\\t\\n\\t\\t\\t&nbsp;\\n'
+re2= r'class="mensagemExibindo">Advogada:&nbsp;</span>\\n\\t\\t\\t\\n\\t\\t\\t\\t\\n\\t\\t\\t\\t\\n\\t\\t\\t\\t\\t(.*?)\\n\\t\\t\\t\\t\\n\\t\\t\\t&nbsp;\\n'
+
+autores = re.compile("(%s|%s)" % (re1, re2,)).findall(leitura, re.DOTALL)
+print ('autor:')
+print(autores)
+
+
+
+
+
+
+
+#subtitulo = re.findall(r'"summary":"(.*?)","title"', leitura)
+#print ('\n''*Subtitulos:*''\n')
+#print(*subtitulo,sep='\n')
+
+
+
+#manchetes e subs integrados
+
+#tituloComSubtitulo = re.findall(r'text-ssr"(.*?)/div>', leitura)
+#print(tituloComSubtitulo)
+#titulosCompletos = re.findall(r'>(.*?)</', str (tituloComSubtitulo))
+#subtitulosCompleto =re.findall(>(.*?).<', str (tituloComSubtitulo))
+#print(subtitulosCompleto,sep='\n')
+
+
+#listaManchete = manchete
+#listaSubs = subtitulo
+#text = ''
+#for manchete, subtitulo in zip(listaManchete, listaSubs):
+#    text += '\nMANCHETEEE {} \n SUBISSS{}'.format(manchete, subtitulo)
+#print(text)
+
+
+
+
+
+#manchetes Json
+#dadosManchetes = json.dumps(manchete)
+
+#with open('manchetesJson.json', 'w', encoding='utf8') as f:
+  #  json.dump(dadosManchetes, f, separators=(',', ':'))
+
+#print(dadosManchetes)
+
+#subtitulos Json
+#dadosSubtitulos = json.dumps(subtitulo)
+
+#with open('subtitulosJson.json', 'w', encoding='utf8') as f:
+ #   json.dump(dadosSubtitulos, f, ensure_ascii=False, sort_keys=True, indent=4, separators=(',', ':'))
+
+#print(dadosSubtitulos)
